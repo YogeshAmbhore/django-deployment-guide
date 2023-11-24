@@ -30,7 +30,7 @@
    - Change to the cloned project directory.
 
 10. **Install Project Requirements (Optional if not using Docker):**
-    - Install all project requirements. [Poetry Reference](https://awstip.com/utilizing-poetry-for-managing-python-project-requirements-b911245d3aa2)
+    - Install all project requirements.
 
 11. **Configure Security Group:**
     - Update the security group to allow requests on port 8000.
@@ -57,8 +57,8 @@
       docker build -t my-python-app:1.0 .
       docker image ls
       docker run -p 8000:8000 my-python-app:1.0
+      - Visit http://localhost:8000 to test.
       ```
-      - Visit http://localhost:8000 to test. [Poetry Reference](https://awstip.com/setting-up-a-django-project-with-docker-and-poetry-f391d6cde2cf)
 
 16. **Push Dockerfile Code to Repo:**
     - Commit and push the Dockerfile code to the Git repository.
@@ -81,7 +81,6 @@
       sudo usermod -aG docker $USER
       id $USER
       ```
-      - Docker Install References: [Medium Guide](https://medium.com/@srijaanaparthy/step-by-step-guide-to-install-docker-on-ubuntu-in-aws-a39746e5a63d), [Linux How2shout](https://linux.how2shout.com/how-to-install-docker-on-aws-ec2-ubuntu-22-04-or-20-04-linux/)
 
 20. **Test Dockerfile on EC2:**
     - Test the Dockerfile on the EC2 instance using the following commands:
@@ -89,8 +88,8 @@
       docker build -t my-python-app:1.0 .
       docker image ls
       docker run -p 8000:8000 my-python-app:1.0
-      ```
       - Visit http://EC2-Public-IP:8000 to test.
+      ```
 
 ## Additional References:
 
