@@ -3,7 +3,7 @@
 ## Setting up Django Project on EC2 Instance
 
 1. **Create a Django Project:**
-   - Create a new Django project.
+   - Create a new Django project. (Note: refer the poetry link below to create project using poetry)
 
 2. **Add Project to Git Repository:**
    - Initialize a Git repository for your project and commit the initial code.
@@ -99,8 +99,10 @@
   - [Tutorial 3](https://www.youtube.com/watch?v=DaxcmbWcdTA&list=PL6gx4Cwl9DGDYbs0jJdGefNN8eZRSwWqy&index=2)
 
 - **Poetry References:**
+  - [Poetry official documentation](https://python-poetry.org/docs/#installing-with-the-official-installer)
   - [Utilizing Poetry for Managing Python Project Requirements](https://awstip.com/utilizing-poetry-for-managing-python-project-requirements-b911245d3aa2)
   - [Setting up a Django Project with Docker and Poetry](https://awstip.com/setting-up-a-django-project-with-docker-and-poetry-f391d6cde2cf)
+  - [Setting up a basic Django project with Poetry](https://builtwithdjango.com/blog/basic-django-setup)
 
 - **Docker Install References:**
   - [Step-by-Step Guide to Install Docker on Ubuntu in AWS](https://medium.com/@srijaanaparthy/step-by-step-guide-to-install-docker-on-ubuntu-in-aws-a39746e5a63d)
