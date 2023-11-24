@@ -29,16 +29,16 @@
 9. **Navigate to Cloned Project Directory:**
    - Change to the cloned project directory.
 
-10. **Install Project Requirements:**
-    - Install all project requirements.
+10. **Install Project Requirements (Optional if not using Docker):**
+    - Install all project requirements. [Poetry Reference](https://awstip.com/utilizing-poetry-for-managing-python-project-requirements-b911245d3aa2)
 
 11. **Configure Security Group:**
     - Update the security group to allow requests on port 8000.
-      - Settings => Custom TCP   8000   Anywhere   0.0.0.0
+      - Settings => Custom TCP   8000   Anywhere   0.0.0.0 
 
 12. **Run the Django Server:**
     - Execute the following command to run the Django server:
-      ```
+      ```bash
       python3 manage.py runserver 0.0.0.0:8000
       ```
 
@@ -53,12 +53,12 @@
 
 15. **Test Dockerfile Locally:**
     - Build and run the Docker image locally using the following commands:
-      ```
+      ```bash
       docker build -t my-python-app:1.0 .
       docker image ls
       docker run -p 8000:8000 my-python-app:1.0
       ```
-      - Visit http://localhost:8000 to test.
+      - Visit http://localhost:8000 to test. [Poetry Reference](https://awstip.com/setting-up-a-django-project-with-docker-and-poetry-f391d6cde2cf)
 
 16. **Push Dockerfile Code to Repo:**
     - Commit and push the Dockerfile code to the Git repository.
@@ -69,11 +69,40 @@
 18. **Pull Updated Code on EC2:**
     - SSH into the EC2 instance and pull the updated code.
 
-19. **Test Dockerfile on EC2:**
-    - Test the Dockerfile on the EC2 instance using the following commands:
+19. **Install Docker on EC2:**
+    - Install Docker on the EC2 instance using the following commands:
+      ```bash
+      sudo apt-get install docker.io –y
+      sudo systemctl start docker
+      sudo systemctl enable docker
+      sudo docker run hello-world
+      docker –version
+      systemctl status docker --no-pager –l
+      sudo usermod -aG docker $USER
+      id $USER
       ```
+      - Docker Install References: [Medium Guide](https://medium.com/@srijaanaparthy/step-by-step-guide-to-install-docker-on-ubuntu-in-aws-a39746e5a63d), [Linux How2shout](https://linux.how2shout.com/how-to-install-docker-on-aws-ec2-ubuntu-22-04-or-20-04-linux/)
+
+20. **Test Dockerfile on EC2:**
+    - Test the Dockerfile on the EC2 instance using the following commands:
+      ```bash
       docker build -t my-python-app:1.0 .
       docker image ls
       docker run -p 8000:8000 my-python-app:1.0
       ```
       - Visit http://EC2-Public-IP:8000 to test.
+
+## Additional References:
+
+- **YouTube Tutorials:**
+  - [Tutorial 1](https://www.youtube.com/watch?v=EatrtErP8JA&t=141s)
+  - [Tutorial 2](https://www.youtube.com/watch?v=rz-W7-sccKk&list=PLzwfZQTGG83n4cAUzyQn-32M2GwUP7w3f)
+  - [Tutorial 3](https://www.youtube.com/watch?v=DaxcmbWcdTA&list=PL6gx4Cwl9DGDYbs0jJdGefNN8eZRSwWqy&index=2)
+
+- **Poetry References:**
+  - [Utilizing Poetry for Managing Python Project Requirements](https://awstip.com/utilizing-poetry-for-managing-python-project-requirements-b911245d3aa2)
+  - [Setting up a Django Project with Docker and Poetry](https://awstip.com/setting-up-a-django-project-with-docker-and-poetry-f391d6cde2cf)
+
+- **Docker Install References:**
+  - [Step-by-Step Guide to Install Docker on Ubuntu in AWS](https://medium.com/@srijaanaparthy/step-by-step-guide-to-install-docker-on-ubuntu-in-aws-a39746e5a63d)
+  - [How to Install Docker on AWS EC2 Ubuntu 22.04 or 20.04 Linux](https://linux.how2shout.com/how-to-install-docker-on-aws-ec2-ubuntu-22-04-or-20-04-linux/)
