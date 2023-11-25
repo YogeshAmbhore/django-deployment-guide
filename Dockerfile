@@ -38,4 +38,6 @@ RUN PATH="${POETRY_HOME}/bin:${PATH}" && \
     poetry cache clear --no-interaction --all pypi
 
 
+EXPOSE 8000
+
 CMD ["/etc/poetry/bin/poetry", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]
