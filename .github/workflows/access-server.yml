@@ -13,7 +13,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             sudo apt-get -y update
-            cd /django_project/django-deployment-guide
+            cd django_project/django-deployment-guide
             ls
             git pull origin main
             docker rmi my-python-app
