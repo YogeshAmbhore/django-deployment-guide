@@ -84,8 +84,8 @@ jobs:
     name: Access server
     runs-on: ubuntu-latest
     steps:
-      - name: Check out code
-        uses: actions/checkout@v2
+      - name: Create a file
+        uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.HOST_DNS }}
           username: ${{ secrets.USERNAME }}
@@ -94,12 +94,6 @@ jobs:
             sudo apt-get -y update
             cd django_project/django-deployment-guide
             git pull origin main
-
-            # Add error handling for Git pull
-            if [ $? -ne 0 ]; then
-              echo "Error: Git pull failed."
-              exit 1
-            fi
             docker build -t my-python-app:latest .
             docker run -d -p 8000:8000 --name my-python-app my-python-app:latest
 
