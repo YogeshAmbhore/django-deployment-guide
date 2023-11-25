@@ -16,6 +16,7 @@ jobs:
             cd django_project/django-deployment-guide
             ls
             git pull origin main
+            docker ps -a
             docker stop my-python-app  # Stop the existing container
             docker rm my-python-app    # Remove the existing container
             docker rmi my-python-app:1.0  # Remove the existing image (if needed)
