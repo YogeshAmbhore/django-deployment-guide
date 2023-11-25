@@ -16,7 +16,7 @@ jobs:
             cd django_project/django-deployment-guide
             ls
             git pull origin main
-            docker rmi my-python-app
-            docker rm my-python-app
+            docker rmi my-python-app:1.0
+            docker rm my-python-app:1.0
             docker build -t my-python-app:1.0 .
             docker run -p 8000:8000 my-python-app:1.0
