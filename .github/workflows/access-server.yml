@@ -111,6 +111,6 @@ jobs:
               exit 1
             fi
 
-            docker stop my-python-app || true
-            docker rm my-python-app || true
+            docker stop my-python-app:${{ github.sha }}
+            docker rm my-python-app${{ github.sha }}
             docker run -d -p 8000:8000 --name my-python-app my-python-app:${{ github.sha }}
