@@ -14,6 +14,7 @@ jobs:
           script: |
             sudo apt-get -y update
             cd /django_project/django-deployment-guide
+            ls
             git pull origin main
             docker rmi my-python-app
             docker rm my-python-app
