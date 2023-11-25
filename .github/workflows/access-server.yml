@@ -8,7 +8,7 @@ jobs:
       - name: Check Dockerfile Changes
         id: dockerfile_changed
         run: |
-          changed_files=$(git diff --name-only ${{ github.sha }}^ ${{ github.sha }} | grep "Dockerfile")
+          changed_files=$(git diff --name-only ${{ github.sha }}^..${{ github.sha }} | grep "Dockerfile")
           if [ -n "$changed_files" ]; then
             echo "Dockerfile has changed. Removing old container and image."
             echo "::set-output name=changed::true"
