@@ -1,3 +1,36 @@
+# name: Access server
+# on: push
+# jobs:
+#   access_server:
+#     name: Access server
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Create a file
+#         uses: appleboy/ssh-action@v1.0.0
+#         with:
+#           host: ${{ secrets.HOST_DNS }}
+#           username: ${{ secrets.USERNAME }}
+#           key: ${{ secrets.EC2_SSH_KEY }}
+#           script: |
+#             sudo apt-get -y update
+#             cd django_project/django-deployment-guide
+#             git pull origin main
+
+#             # Add error handling for Git pull
+#             if [ $? -ne 0 ]; then
+#               echo "Error: Git pull failed."
+#               exit 1
+#             fi
+
+#             # Build and run Docker container only if Dockerfile has changed
+#             if [ "${{ steps.dockerfile_changed.outputs.changed }}" == 'true' ]; then
+#               docker build -t my-python-app:1.0 .
+#             fi
+#             docker run -p 8000:8000 my-python-app:1.0
+
+
+
+
 name: Access server
 on: push
 jobs:
@@ -21,55 +54,22 @@ jobs:
               echo "Error: Git pull failed."
               exit 1
             fi
+            
+            changed_files=$(git diff --name-only ${{ github.sha }}^..${{ github.sha }} | grep "Dockerfile")
+            if [ -n "$changed_files" ]; then
+              echo "Dockerfile has changed. Removing old container and image."
+              echo "::set-output name=changed::true"
+            else
+              echo "Dockerfile has not changed. Continuing with existing container and image."
+              echo "::set-output name=changed::false"
+            fi
+
+            docker ps -a
+            docker rm -f $(docker ps -aq)
+            docker rmi -f $(docker images -q)
 
             # Build and run Docker container only if Dockerfile has changed
             if [ "${{ steps.dockerfile_changed.outputs.changed }}" == 'true' ]; then
               docker build -t my-python-app:1.0 .
             fi
             docker run -p 8000:8000 my-python-app:1.0
-
-
-
-
-# name: Access server
-# on: push
-# jobs:
-#   access_server:
-#     name: Access server
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Create a file
-#         uses: appleboy/ssh-action@v1.0.0
-#         with:
-#           host: ${{ secrets.HOST_DNS }}
-#           username: ${{ secrets.USERNAME }}
-#           key: ${{ secrets.EC2_SSH_KEY }}
-#           run: |
-#             sudo apt-get -y update
-#             cd django_project/django-deployment-guide
-#             git pull origin main
-
-#             # Add error handling for Git pull
-#             if [ $? -ne 0 ]; then
-#               echo "Error: Git pull failed."
-#               exit 1
-#             fi
-            
-#             changed_files=$(git diff --name-only ${{ github.sha }}^..${{ github.sha }} | grep "Dockerfile")
-#             if [ -n "$changed_files" ]; then
-#               echo "Dockerfile has changed. Removing old container and image."
-#               echo "::set-output name=changed::true"
-#             else
-#               echo "Dockerfile has not changed. Continuing with existing container and image."
-#               echo "::set-output name=changed::false"
-#             fi
-
-#             docker ps -a
-#             docker rm -f $(docker ps -aq)
-#             docker rmi -f $(docker images -q)
-
-#             # Build and run Docker container only if Dockerfile has changed
-#             if [ "${{ steps.dockerfile_changed.outputs.changed }}" == 'true' ]; then
-#               docker build -t my-python-app:1.0 .
-#             fi
-#             docker run -p 8000:8000 my-python-app:1.0
