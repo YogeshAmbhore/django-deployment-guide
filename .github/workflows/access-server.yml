@@ -11,7 +11,7 @@ jobs:
           host: ${{ secrets.HOST_DNS }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          run: |
+          script: |
             sudo apt-get -y update
             cd django_project/django-deployment-guide
             git pull origin main
