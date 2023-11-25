@@ -110,9 +110,7 @@ jobs:
               echo "Error: Git pull failed."
               exit 1
             fi
-
-            docker stop $(docker ps -aq) || true
-            docker rm -f $(docker ps -aq) || true
+            
             docker run -d -p 8000:8000 --name my-python-app my-python-app:latest
 
 
