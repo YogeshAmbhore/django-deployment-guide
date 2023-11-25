@@ -78,7 +78,11 @@
 
 
 name: Access server
-on: push
+on:
+  push:
+    branches:
+      - main
+      
 jobs:
   access_server:
     name: Access server
@@ -93,9 +97,8 @@ jobs:
           script: |
             sudo apt-get -y update
             cd django_project/django-deployment-guide
-            git pull origin main
-            docker build -t my-python-app:latest .
-            docker run -d -p 8000:8000 --name my-python-app my-python-app:latest
+            docker build -t my-python-app:1.0 .
+            docker run -d -p 8000:8000 --name my-python-app my-python-app:1.0
 
 
 
