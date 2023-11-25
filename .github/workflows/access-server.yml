@@ -86,16 +86,6 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-
-      - name: Build Docker image
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          docker build -t my-python-app:latest .
-          docker tag my-python-app:latest my-python-app:${{ github.sha }}
-
-      - name: Create a file
-        uses: appleboy/ssh-action@v1.0.0
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         with:
           host: ${{ secrets.HOST_DNS }}
           username: ${{ secrets.USERNAME }}
@@ -110,7 +100,7 @@ jobs:
               echo "Error: Git pull failed."
               exit 1
             fi
-            
+            docker build -t my-python-app:latest .
             docker run -d -p 8000:8000 --name my-python-app my-python-app:latest
 
 
