@@ -5,4 +5,4 @@ from rest_framework.views import APIView
 
 class HomeView(APIView):
     def get(self, request):
-        return HttpResponse("connected")
+        return HttpResponse("<h1>Hello World! this is our new site</h1>")
