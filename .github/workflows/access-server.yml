@@ -77,82 +77,81 @@
 
 
 
-# name: Access server
-# on: push
-# jobs:
-#   access_server:
-#     name: Access server
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Check out code
-#         uses: actions/checkout@v2
-
-#       - name: Build Docker image
-#         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-#         run: |
-#           docker build -t my-python-app:latest .
-#           docker tag my-python-app:latest my-python-app:${{ github.sha }}
-
-#       - name: Create a file
-#         uses: appleboy/ssh-action@v1.0.0
-#         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-#         with:
-#           host: ${{ secrets.HOST_DNS }}
-#           username: ${{ secrets.USERNAME }}
-#           key: ${{ secrets.EC2_SSH_KEY }}
-#           script: |
-#             sudo apt-get -y update
-#             cd django_project/django-deployment-guide
-#             git pull origin main
-
-#             # Add error handling for Git pull
-#             if [ $? -ne 0 ]; then
-#               echo "Error: Git pull failed."
-#               exit 1
-#             fi
-
-
-#             docker stop $(docker ps -aq)
-#             docker rm -f $(docker ps -aq)
-#             docker run -d -p 8000:8000 --name my-python-app my-python-app:${{ github.sha }}
-
-
-name: Docker CI/CD Pipeline
-
-# on:
-#   push:
-#     branches:
-#       - main
+name: Access server
 on: push
-
 jobs:
-  build-test-deploy:
-    runs-on: self-hosted
-
+  access_server:
+    name: Access server
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build Docker image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          docker build -t my-python-app:latest .
+          docker tag my-python-app:latest my-python-app:${{ github.sha }}
 
-      - name: Build and Push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          
-      - name: Deploy to EC2 instance
-        uses: appleboy/ssh-action@master
+      - name: Create a file
+        uses: appleboy/ssh-action@v1.0.0
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         with:
           host: ${{ secrets.HOST_DNS }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            docker stop my-python-app || true
-            docker rm my-python-app || true
-            docker pull ${{ secrets.DOCKER_USERNAME }}/my-python-app:${{ github.sha }}
-            docker run -d --name webapp -p 80:80 ${{ secrets.DOCKER_USERNAME }}/my-python-app:${{ github.sha }}
+            sudo apt-get -y update
+            cd django_project/django-deployment-guide
+            git pull origin main
+
+            # Add error handling for Git pull
+            if [ $? -ne 0 ]; then
+              echo "Error: Git pull failed."
+              exit 1
+            fi
+
+            docker stop $(docker ps -aq)
+            docker rm -f $(docker ps -aq)
+            docker run -d -p 8000:8000 --name my-python-app my-python-app:latest
+
+
+
+# name: Docker CI/CD Pipeline
+# # on:
+# #   push:
+# #     branches:
+# #       - main
+# on: push
+
+# jobs:
+#   build-test-deploy:
+#     runs-on: self-hosted
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+
+#       - name: Login to Docker Hub
+#         uses: docker/login-action@v3
+#         with:
+#           username: ${{ secrets.DOCKER_USERNAME }}
+#           password: ${{ secrets.DOCKER_PASSWORD }}
+
+#       - name: Build and Push Docker image
+#         uses: docker/build-push-action@v5
+#         with:
+#           context: .
+#           push: true
+          
+#       - name: Deploy to EC2 instance
+#         uses: appleboy/ssh-action@master
+#         with:
+#           host: ${{ secrets.HOST_DNS }}
+#           username: ${{ secrets.USERNAME }}
+#           key: ${{ secrets.EC2_SSH_KEY }}
+#           script: |
+#             docker stop my-python-app || true
+#             docker rm my-python-app || true
+#             docker pull ${{ secrets.DOCKER_USERNAME }}/my-python-app:${{ github.sha }}
+#             docker run -d --name webapp -p 80:80 ${{ secrets.DOCKER_USERNAME }}/my-python-app:${{ github.sha }}
